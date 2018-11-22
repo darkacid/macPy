@@ -9,21 +9,6 @@ import time
 import sys
 import re
 
-if __name__ =="__main__":
-    if len(sys.argv) < 4:
-        print("launch with:  ",sys.argv[0],'host','username','password')
-        exit(1)
-    
-    HOST = sys.argv[1]
-    username = sys.argv[2]
-    password = sys.argv[3]
-try :
-    HOST
-    username
-    password
-except: 
-    raise ValueError("Host, username or password undefined")
-
 def TelnetGet(HOST,username,password,command):
 
     tn = telnetlib.Telnet(HOST)
@@ -83,8 +68,29 @@ def parseCLIOutput(sw_output_normalized):
                 raise ValueError("Regex match failed: " + item )
     macTable.append(len(macTable)) #Append length of the actual mac table to the list.
     return macTable
+def getMacTable():
+    '''
+    Return macTable list to caller script.
+    '''
+    try :
+        HOST
+        username
+        password
+    except: 
+        raise ValueError("Host, username or password undefined")
 
-sw_output_normalized = TelnetGet(HOST,username,password,"debug info")
-macTable = parseCLIOutput(sw_output_normalized)
-print(macTable)
+
+    sw_output_normalized = TelnetGet(HOST,username,password,"debug info")
+    macTable = parseCLIOutput(sw_output_normalized)
+    #print(macTable)
+    return macTable
+
+if __name__ =="__main__":
+    if len(sys.argv) < 4:
+        print("launch with:  ",sys.argv[0],'host','username','password')
+        exit(1)
+    
+    HOST = sys.argv[1]
+    username = sys.argv[2]
+    password = sys.argv[3]
 
